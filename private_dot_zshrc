@@ -72,6 +72,7 @@ function fzf-src () {
 }
 zle -N fzf-src
 bindkey '^G' fzf-src
+
 # Directory navigation enhancements
 setopt auto_cd # Change directory by just typing the directory name
 setopt auto_pushd # Automatically add to directory stack on cd (can return with popd)
@@ -119,4 +120,3 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Must: Place at the very end
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
