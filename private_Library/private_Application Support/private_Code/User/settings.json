@@ -1,0 +1,102 @@
+{
+    "terminal.integrated.fontSize": 15,
+    "terminal.integrated.scrollback": 10000,
+    "window.zoomLevel": 0.5,
+    "workbench.colorTheme": "GitHub Dark Dimmed",
+    "workbench.startupEditor": "none",
+    "[go]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.formatOnSave": true,
+        "editor.snippetSuggestions": "none"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+    "cSpell.userWords": [
+        "mqtt"
+    ],
+    "chat.editor.fontSize": 15,
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "editor.fontSize": 15,
+    "editor.inlineSuggest.enabled": true,
+    "editor.language.colorizedBracketPairs": [
+        [
+            "[",
+            "]"
+        ],
+        [
+            "{",
+            "}"
+        ],
+        [
+            "(",
+            ")"
+        ]
+    ],
+    "editor.wordWrap": "on",
+    "files.autoSave": "onFocusChange",
+    "git.autofetch": true,
+    "git.enableCommitSigning": true,
+    "git.suggestSmartCommit": false,
+    "github.copilot.chat.commitMessageGeneration.instructions": [
+        {
+            "text": "Follow Conventional Commits format strictly: type(scope): description. Use types like feat, fix, docs, style, refactor, perf, test, chore, ci."
+        },
+        {
+            "text": "Use imperative mood: e.g., 'Add feature' not 'Added feature'."
+        },
+        {
+            "text": "Keep subject line under 50 characters."
+        },
+        {
+            "text": "Include scope when relevant (e.g., api, ui, auth)."
+        },
+        {
+            "text": "Reference issues with # prefix (e.g., #123)."
+        },
+        {
+            "text": "Add BREAKING CHANGE footer if applicable."
+        },
+        {
+            "text": "Limit body to 2-3 sentences if needed."
+        },
+        {
+            "text": "Use all lowercase for subject."
+        }
+    ],
+    "github.copilot.chat.localeOverride": "ja",
+    "github.copilot.enable": {
+        "*": true,
+        "markdown": false,
+        "plaintext": true,
+        "scminput": false
+    },
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "gitlens.ai.model": "vscode",
+    "gitlens.ai.vscode.model": "copilot:claude-3.7-sonnet",
+    "go.languageServerFlags": [],
+    "go.toolsManagement.autoUpdate": true,
+    "go.useLanguageServer": true,
+    "gopls": {
+        "analyses.simplifycompositelit": true,
+        "build.experimentalWorkspaceModule": true,
+        "experimentalWorkspaceModule": true,
+        "ui.rename.useInteractive": true
+    },
+    "markdownlint.config": {
+        "MD022": false,
+        "MD031": false,
+        "MD032": false
+    },
+    "python.analysis.typeCheckingMode": "standard",
+    "redhat.telemetry.enabled": false,
+    "roo-cline.allowedCommands": [
+        "git log",
+        "git diff",
+        "npm test",
+        "tsc",
+        "git show"
+    ],
+}
