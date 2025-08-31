@@ -6,7 +6,8 @@ autoload -Uz compinit && compinit
 zstyle ':completion:*' menu select # Enable menu-style completion (selectable with Tab)
 
 # Aliases
-alias git=hub
+alias vi="nvim"
+alias git="hub"
 alias gg="ghq get -p"
 alias ls='ls -G' # Colored ls on macOS (use --color=auto on Linux)
 alias ll='ls -lh' # Detailed list, human-readable sizes
@@ -71,31 +72,25 @@ function fzf-src () {
 }
 zle -N fzf-src
 bindkey '^G' fzf-src
-
 # Directory navigation enhancements
 setopt auto_cd # Change directory by just typing the directory name
 setopt auto_pushd # Automatically add to directory stack on cd (can return with popd)
 setopt pushd_ignore_dups # Do not add duplicates to the stack
 
 # Prompt enhancements
-# export PS1="$ "
 setopt prompt_subst # Allow variable and command expansion in prompt
 autoload -Uz vcs_info
-precmd() { vcs_info }
 zstyle ':vcs_info:git:*' formats '%F{red}(%b)%f'
 zstyle ':vcs_info:*' enable git
-PS1="%F{green}>%f "
-RPROMPT='$vcs_info_msg_0_' # Right side: Display Git branch
-
-# Starship
-# eval "$(starship init zsh)"
-
-# Terminal title
-precmd () { print -Pn "\e]2;%-3~\a"; } # Display current directory in terminal title
+precmd() {
+  vcs_info
+  print -Pn "\e]2;%-3~\a" # Set terminal title to current directory
+  PS1="%F{green}>%f "
+  RPROMPT="${vcs_info_msg_0_}"
+}
 
 # Enable direnv
 eval "$(direnv hook zsh)"
-
 # Google Cloud SDK settings
 export PATH=$PATH:$HOME/google-cloud-sdk/bin
 if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
@@ -112,6 +107,7 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # Kiro terminal integration
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="$HOME/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
@@ -123,3 +119,4 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Must: Place at the very end
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
