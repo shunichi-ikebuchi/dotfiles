@@ -1,0 +1,12 @@
+## General
+set line-graphics = utf-8 # Type for graph drawing
+set tab-size = 8 # Display width of TAB characters
+set ignore-space = all # Ignore spaces
+set split-view-width = 75% # Ratio for vertical split
+set vertical-split = yes
+# Main view display settings
+set main-view = id:yes date:local=yes author:full commit-title:graph=yes,refs=yes
+# When pressing V in the status view, open the commit log input screen in diff display mode
+bind status V !git commit -v
+# When pressing v in the main view, split the view and show the commit diff
+bind main v enter
