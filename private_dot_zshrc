@@ -84,10 +84,10 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' formats '%F{red}(%b)%f'
 zstyle ':vcs_info:*' enable git
 precmd() {
-  vcs_info
-  print -Pn "\e]2;%-3~\a" # Set terminal title to current directory
-  PS1="%F{green}>%f "
-  RPROMPT="${vcs_info_msg_0_}"
+    vcs_info
+    print -Pn "\e]2;%-3~\a" # Set terminal title to current directory
+    PS1="%F{green}>%f "
+    RPROMPT="${vcs_info_msg_0_}"
 }
 
 # Enable direnv
