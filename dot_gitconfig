@@ -1,0 +1,43 @@
+[user]
+    name = Shunichi Ikebuchi
+    email = shunichi@pigeonworks.net
+[push]
+    default = simple
+    autoSetupRemote = true
+[color]
+    ui = auto
+[core]
+    excludesfile = ~/.gitignore_global
+    pager = LESS=-R less
+    editor = vi
+    autocrlf = false
+[alias]
+    br = branch
+    cancel = reset --soft HEAD^
+    cm = commit
+    cma = commit -a
+    cmam = commit -am
+    cmm = commit -m
+    cmn = commit --allow-empty-message -m ''
+    co = checkout
+    df = diff
+    dfc = diff --cached
+    ft = fetch
+    ps = push
+    pl = pull
+    plp = pull --prune
+    st = status
+    tmp = commit -a -m 'tmp'
+    tr = log --graph --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
+    clcheck = clean -fd -n
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+[commit]
+    gpgSign = true
+[tag]
+    gpgSign = true
+[include]
+    path = ~/.gitconfig.local
