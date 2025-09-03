@@ -63,5 +63,8 @@
 [interactive]
 	diffFilter = delta --color-only  # Enable after installing delta tool
 
+[delta]
+	paging = always
+
 [include]
 	path = ~/.gitconfig.local
