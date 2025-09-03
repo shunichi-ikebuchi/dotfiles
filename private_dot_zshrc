@@ -10,12 +10,13 @@ source <(gwq completion zsh)
 
 # Aliases (unified to double quotes for consistency)
 alias vi="nvim"
-alias gg="ghq get -p"
 alias ls="ls -G"  # Colored ls on macOS (use --color=auto on Linux)
 alias ll="ls -lh"  # Detailed list, human-readable sizes
 alias la="ls -A"  # Show hidden files
 alias mv="mv -i"  # Confirm before overwriting
 alias tac="gtac"
+alias gg="ghq get -p"
+alias ggb="ghq get -p --bare"
 alias gwa="gwq add -b"  # Add worktree for a new branch
 alias gwl="gwq list -v"  # Worktree list (detailed display)
 alias gws="gwq status --watch"  # Real-time status monitoring
