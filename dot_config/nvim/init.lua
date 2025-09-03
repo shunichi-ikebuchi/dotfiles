@@ -27,14 +27,14 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
-vim.opt.clipboard = 'unnamedplus'  -- System clipboard integration (macOS compatible)
+vim.opt.clipboard = 'unnamedplus' -- System clipboard integration (macOS compatible)
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
 vim.opt.scrolloff = 8
 vim.opt.mouse = 'a'
 vim.opt.termguicolors = true
-vim.opt.laststatus = 3  -- Global statusline for better LSP info
+vim.opt.laststatus = 3 -- Global statusline for better LSP info
 
 -- macOS-specific clipboard provider (ensures pbcopy/pbpaste usage)
 if vim.fn.has('mac') == 1 then
@@ -56,6 +56,9 @@ end
 vim.keymap.set('n', '<Esc><Esc>', ':nohlsearch<CR><Esc>', { silent = true })
 vim.keymap.set('n', '<leader>e', ':Oil<CR>', { desc = 'File explorer' })
 vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Save' })
+-- Normal mode
+vim.keymap.set('n', 'j', 'gj')
+vim.keymap.set('n', 'k', 'gk')
 
 -- Plugins
 require('lazy').setup({
@@ -65,7 +68,7 @@ require('lazy').setup({
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'go', 'zig', 'bash', 'python', 'lua', 'vimdoc' },  -- Includes Lua
+        ensure_installed = { 'go', 'zig', 'bash', 'python', 'lua', 'vimdoc' }, -- Includes Lua
         highlight = { enable = true },
         indent = { enable = true },
       }
@@ -89,13 +92,13 @@ require('lazy').setup({
         options = { theme = 'auto' },
         sections = {
           lualine_c = { 'filename' },
-          lualine_x = { 'diagnostics' },  -- LSP diagnostics
+          lualine_x = { 'diagnostics' }, -- LSP diagnostics
         },
       }
     end
   },
   -- Git signs
-  { 'lewis6991/gitsigns.nvim', config = true },
+  { 'lewis6991/gitsigns.nvim',             config = true },
   -- Fuzzy finder
   {
     'nvim-telescope/telescope.nvim',
@@ -140,7 +143,7 @@ require('lazy').setup({
     dependencies = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',  -- Install linters/formatters
+      'WhoIsSethDaniel/mason-tool-installer.nvim', -- Install linters/formatters
     },
     config = function()
       local lspconfig = require('lspconfig')
@@ -148,21 +151,21 @@ require('lazy').setup({
       require('mason').setup()
       require('mason-lspconfig').setup({
         ensure_installed = {
-          'gopls',       -- Go
-          'zls',         -- Zig (for linting; zig-lamp handles LSP)
-          'bashls',      -- Shell
-          'pyright',     -- Python
-          'lua_ls',      -- Lua
+          'gopls',   -- Go
+          'zls',     -- Zig (for linting; zig-lamp handles LSP)
+          'bashls',  -- Shell
+          'pyright', -- Python
+          'lua_ls',  -- Lua
         },
         automatic_installation = true,
       })
       require('mason-tool-installer').setup({
         ensure_installed = {
-          'goimports',      -- Go formatter
-          'shfmt', 'shellcheck',    -- Shell
-          'ruff',           -- Python
-          'stylua', 'luacheck',     -- Lua
-          'revive',         -- Go linter
+          'goimports',           -- Go formatter
+          'shfmt', 'shellcheck', -- Shell
+          'ruff',                -- Python
+          'stylua', 'luacheck',  -- Lua
+          'revive',              -- Go linter
         },
       })
       -- Individual LSP setups (replaces setup_handlers)
@@ -198,7 +201,7 @@ require('lazy').setup({
         },
       })
       lspconfig.bashls.setup({ capabilities = capabilities })
-      lspconfig.zls.setup({ capabilities = capabilities })  -- For Zig linting fallback
+      lspconfig.zls.setup({ capabilities = capabilities }) -- For Zig linting fallback
       -- LSP keymaps
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
@@ -218,7 +221,7 @@ require('lazy').setup({
       require('conform').setup({
         format_on_save = { timeout_ms = 500, lsp_format = 'fallback' },
         formatters_by_ft = {
-          go = { 'goimports' },  -- Use goimports (includes gofmt functionality)
+          go = { 'goimports' }, -- Use goimports (includes gofmt functionality)
           zig = { 'zig fmt' },  -- Use zig fmt (install Zig via brew install zig)
           sh = { 'shfmt' },
           python = { 'ruff_format' },
@@ -249,7 +252,7 @@ require('lazy').setup({
     dependencies = { 'neovim/nvim-lspconfig', 'nvim-lua/plenary.nvim' },
     init = function()
       -- Optional settings (defaults from docs)
-      vim.g.zig_lamp_zls_auto_install = nil  -- Disable auto-install if needed
+      vim.g.zig_lamp_zls_auto_install = nil -- Disable auto-install if needed
       vim.g.zig_lamp_fall_back_sys_zls = nil
       vim.g.zig_lamp_zls_lsp_opt = {}
       vim.g.zig_lamp_pkg_help_fg = "#CF5C00"
@@ -257,11 +260,11 @@ require('lazy').setup({
     end,
   },
   -- Go-specific
-  { 'ray-x/go.nvim', config = true },
+  { 'ray-x/go.nvim',                       config = true },
   -- File explorer
-  { 'stevearc/oil.nvim', config = true },
+  { 'stevearc/oil.nvim',                   config = true },
   -- Comments
-  { 'numToStr/Comment.nvim', config = true },
+  { 'numToStr/Comment.nvim',               config = true },
   -- Indent guides
   { 'lukas-reineke/indent-blankline.nvim', main = 'ibl', config = true },
   -- Rainbow delimiters
@@ -308,3 +311,4 @@ vim.api.nvim_create_autocmd('FileType', {
 
 vim.cmd('filetype plugin indent on')
 vim.cmd('syntax enable')
+
