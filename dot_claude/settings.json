@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "read": [
+      "**",                    // Allow reading of all files (convenient for whole project analysis)
+      "!**/node_modules/**",   // Exclude node_modules (to prevent unnecessary loading)
+      "!**/.git/**"            // Exclude Git internal files
+    ],
+    "edit": [
+      "**/*.ts",               // Allow editing of TypeScript files
+      "**/*.js",               // Allow editing of JavaScript files
+      "**/*.py",               // Allow editing of Python files
+    ],
+    "commands": {
+      "safe-cmd": [            // Safe commands (execute without confirmation)
+        "ls",
+        "pwd",
+        "cat",
+        "grep",
+        "git status",
+        "git diff",
+        "npm install",
+        "yarn install",
+      ],
+      "dangerous-cmd": [       // Dangerous commands (always confirm or prohibit)
+        "!rm",
+        "!sudo",
+        "!curl -o- | sh"       // Prohibit pipe installations
+      ]
+    }
+  },
+  "ide": {
+    "enabled": true,           // Enable VS Code integration
+    "autoShareErrors": true    // Automatically share IDE errors
+  },
+  "notifications": {
+    "taskCompleteSound": true  // Play sound on task completion
+  },
+  "model": "claude-4-sonnet"   // Set default model to Sonnet4 (high accuracy)
+}
