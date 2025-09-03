@@ -1,29 +1,4 @@
-# Key bind
-bindkey -e
-
-# Command completion
-autoload -Uz compinit && compinit
-zstyle ':completion:*' menu select  # Enable menu-style completion (selectable with Tab)
-
-# gwq auto-completion (for Zsh)
-source <(gwq completion zsh)
-
-# Aliases (unified to double quotes for consistency)
-alias vi="nvim"
-alias ls="ls -G"  # Colored ls on macOS (use --color=auto on Linux)
-alias ll="ls -lh"  # Detailed list, human-readable sizes
-alias la="ls -A"  # Show hidden files
-alias mv="mv -i"  # Confirm before overwriting
-alias tac="gtac"
-alias gg="ghq get -p"
-alias ggb="ghq get -p --bare"
-alias gwa="gwq add -b"  # Add worktree for a new branch
-alias gwl="gwq list -v"  # Worktree list (detailed display)
-alias gws="gwq status --watch"  # Real-time status monitoring
-alias gwr="gwq remove"  # Remove worktree
-alias chz="chezmoi"
-
-# Environment variables settings (added quotes for safety and consistency)
+# Environment variables settings
 export GOPATH="$HOME"
 export PATH="$PATH:$HOME/bin"
 export EDITOR="vim"
@@ -50,6 +25,32 @@ export PATH="$HOME/.local/bin:$PATH"
 # Aqua
 export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
 export PATH="$HOME/.aqua/bin:$PATH"
+
+# Key bind
+bindkey -e
+
+# Command completion
+autoload -Uz compinit && compinit
+zstyle ':completion:*' menu select  # Enable menu-style completion (selectable with Tab)
+bindkey '^[[Z' autosuggest-accept
+
+# gwq auto-completion (for Zsh)
+source <(gwq completion zsh)
+
+# Aliases (unified to double quotes for consistency)
+alias vi="nvim"
+alias ls="ls -G"  # Colored ls on macOS (use --color=auto on Linux)
+alias ll="ls -lh"  # Detailed list, human-readable sizes
+alias la="ls -A"  # Show hidden files
+alias mv="mv -i"  # Confirm before overwriting
+alias tac="gtac"
+alias gg="ghq get -p"
+alias ggb="ghq get -p --bare"
+alias gwa="gwq add -b"  # Add worktree for a new branch
+alias gwl="gwq list -v"  # Worktree list (detailed display)
+alias gws="gwq status --watch"  # Real-time status monitoring
+alias gwr="gwq remove"  # Remove worktree
+alias chz="chezmoi"
 
 # History settings
 HISTFILE="$HOME/.zsh_history"
@@ -89,15 +90,15 @@ setopt auto_pushd  # Automatically add to directory stack on cd (can return with
 setopt pushd_ignore_dups  # Do not add duplicates to the stack
 
 # Prompt enhancements
-setopt prompt_subst  # Allow variable and command expansion in prompt
+setopt prompt_subst # Allow variable and command expansion in prompt
 autoload -Uz vcs_info
-zstyle ':vcs_info:git:*' formats '%F{red}(%b)%f'
+zstyle ':vcs_info:git:*' formats '%b'
 zstyle ':vcs_info:*' enable git
 precmd() {
     vcs_info
-    print -Pn "\e]2;%-3~\a"  # Set terminal title to current directory
+    print -Pn "\e]2;%-3~\a" # Set terminal title to current directory
     PS1="%F{green}>%f "
-    RPROMPT="${vcs_info_msg_0_}"
+    RPROMPT=$'%{\033[32m%}${vcs_info_msg_0_}${vcs_info_msg_0_:+ @ }%2~%{\033[0m%}'
 }
 
 # Enable direnv
