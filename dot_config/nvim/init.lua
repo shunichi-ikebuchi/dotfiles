@@ -222,7 +222,6 @@ require('lazy').setup({
           zig = { 'zig fmt' },  -- Use zig fmt (install Zig via brew install zig)
           sh = { 'shfmt' },
           python = { 'ruff_format' },
-          lua = { 'stylua' },  -- Lua formatter
         },
       })
     end
@@ -236,7 +235,6 @@ require('lazy').setup({
         zig = { 'zls' },
         sh = { 'shellcheck' },
         python = { 'ruff' },
-        lua = { 'luacheck' },  -- Install luacheck: luarocks install luacheck
       }
       vim.api.nvim_create_autocmd({ 'BufWritePost', 'InsertLeave' }, {
         callback = function() require('lint').try_lint() end,
