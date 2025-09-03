@@ -20,6 +20,10 @@
         "git diff",
         "npm install",
         "yarn install",
+        "Bash(gh:*)",
+        "Bash(git:*)",
+        "WebFetch(domain:github.com)",
+        "WebFetch(domain:api.github.com)"
       ],
       "dangerous-cmd": [       // Dangerous commands (always confirm or prohibit)
         "!rm",
