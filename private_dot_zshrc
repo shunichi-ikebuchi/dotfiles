@@ -10,7 +10,6 @@ source <(gwq completion zsh)
 
 # Aliases (unified to double quotes for consistency)
 alias vi="nvim"
-alias git="hub"
 alias gg="ghq get -p"
 alias ls="ls -G"  # Colored ls on macOS (use --color=auto on Linux)
 alias ll="ls -lh"  # Detailed list, human-readable sizes
@@ -21,6 +20,7 @@ alias gwa="gwq add -b"  # Add worktree for a new branch
 alias gwl="gwq list -v"  # Worktree list (detailed display)
 alias gws="gwq status --watch"  # Real-time status monitoring
 alias gwr="gwq remove"  # Remove worktree
+alias chz="chezmoi"
 
 # Environment variables settings (added quotes for safety and consistency)
 export GOPATH="$HOME"
