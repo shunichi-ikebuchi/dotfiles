@@ -1,43 +1,51 @@
 {
   "permissions": {
     "read": [
-      "**",                    // Allow reading of all files (convenient for whole project analysis)
-      "!**/node_modules/**",   // Exclude node_modules (to prevent unnecessary loading)
-      "!**/.git/**"            // Exclude Git internal files
+      "!../**",
+      "./**",
+      "!./node_modules/**",
+      "!./.git/**"
     ],
     "edit": [
-      "**/*.ts",               // Allow editing of TypeScript files
-      "**/*.js",               // Allow editing of JavaScript files
-      "**/*.py",               // Allow editing of Python files
+      "!../**",
+      "./**/*.go",
+      "./**/*.ts",
+      "./**/*.js",
+      "./**/*.py"
     ],
     "commands": {
-      "safe-cmd": [            // Safe commands (execute without confirmation)
-        "ls",
+      "safe-cmd": [
+        "ls ./",
         "pwd",
-        "cat",
-        "grep",
+        "cat ./",
+        "grep ./",
         "git status",
         "git diff",
-        "npm install",
-        "yarn install",
+        "npm install --prefix ./",
+        "yarn install --prefix ./",
         "Bash(gh:*)",
         "Bash(git:*)",
         "WebFetch(domain:github.com)",
         "WebFetch(domain:api.github.com)"
       ],
-      "dangerous-cmd": [       // Dangerous commands (always confirm or prohibit)
+      "dangerous-cmd": [
         "!rm",
         "!sudo",
-        "!curl -o- | sh"       // Prohibit pipe installations
+        "!curl",
+        "!wget",
+        "!cd ..",
+        "!* ../*",
+        "!* /home/*",
+        "!* /etc/*",
+        "!* /root/*"
       ]
     }
   },
   "ide": {
-    "enabled": true,           // Enable VS Code integration
-    "autoShareErrors": true    // Automatically share IDE errors
+    "enabled": true,
+    "autoShareErrors": true
   },
   "notifications": {
-    "taskCompleteSound": true  // Play sound on task completion
-  },
-  "model": "claude-4-sonnet"   // Set default model to Sonnet4 (high accuracy)
+    "taskCompleteSound": true
+  }
 }
