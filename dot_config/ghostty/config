@@ -2,3 +2,10 @@ window-theme = system
 font-size = 16
 mouse-hide-while-typing = true
 cursor-style = bar
+cursor-style-blink = true
+macos-titlebar-style = tabs
+quick-terminal-position = "center"
+quick-terminal-screen = "main"
+quick-terminal-animation-duration = 0.3
+keybind = "global:cmd+shift+t=toggle_quick_terminal"
+
