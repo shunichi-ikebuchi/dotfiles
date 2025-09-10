@@ -22,6 +22,7 @@ preview = true
 template = '{{.Host}}/{{.Owner}}/{{.Repository}}/{{.Branch}}'
 
 [naming.sanitize_chars]
+'/' = '-'
 ':' = '-'
 
 [ui]
