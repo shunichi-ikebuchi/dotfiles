@@ -31,7 +31,7 @@ bindkey -e
 
 # Command completion
 autoload -Uz compinit && compinit
-zstyle ':completion:*' menu select  # Enable menu-style completion (selectable with Tab)
+zstyle ':completion:*' menu select # Enable menu-style completion (selectable with Tab)
 bindkey '^[[Z' autosuggest-accept
 
 # gwq auto-completion (for Zsh)
@@ -40,16 +40,16 @@ source <(gwq completion zsh)
 # Aliases (unified to double quotes for consistency)
 alias vi="nvim"
 alias ls="ls -G"  # Colored ls on macOS (use --color=auto on Linux)
-alias ll="ls -lh"  # Detailed list, human-readable sizes
+alias ll="ls -lh" # Detailed list, human-readable sizes
 alias la="ls -A"  # Show hidden files
 alias mv="mv -i"  # Confirm before overwriting
 alias tac="gtac"
 alias gg="ghq get -p"
 alias ggb="ghq get -p --bare"
-alias gwa="gwq add -b"  # Add worktree for a new branch
-alias gwl="gwq list -v"  # Worktree list (detailed display)
-alias gws="gwq status --watch"  # Real-time status monitoring
-alias gwr="gwq remove"  # Remove worktree
+alias gwa="gwq add -b"         # Add worktree for a new branch
+alias gwl="gwq list -v"        # Worktree list (detailed display)
+alias gws="gwq status --watch" # Real-time status monitoring
+alias gwr="gwq remove"         # Remove worktree
 alias chz="chezmoi"
 
 # History settings
@@ -59,35 +59,35 @@ SAVEHIST=100000
 setopt share_history
 setopt append_history
 setopt inc_append_history
-setopt hist_ignore_all_dups  # Do not save duplicate commands in history
-setopt hist_ignore_space  # Do not save commands starting with space in history (for secret commands)
-setopt hist_reduce_blanks  # Remove extra spaces to compact history
+setopt hist_ignore_all_dups # Do not save duplicate commands in history
+setopt hist_ignore_space    # Do not save commands starting with space in history (for secret commands)
+setopt hist_reduce_blanks   # Remove extra spaces to compact history
 
 # History search with fzf
 function fzf-history-selection() {
-    BUFFER="$(history -n 1 | tac | awk '!a[$0]++' | fzf --query "$LBUFFER" --layout=reverse)"
-    CURSOR="$#BUFFER"
-    zle reset-prompt
+	BUFFER="$(history -n 1 | tac | awk '!a[$0]++' | fzf --query "$LBUFFER" --layout=reverse)"
+	CURSOR="$#BUFFER"
+	zle reset-prompt
 }
 zle -N fzf-history-selection
 bindkey '^R' fzf-history-selection
 
 # Project directory search and navigation with fzf
-function fzf-src () {
-    local selected_dir="$(ghq list -p | fzf --query "$LBUFFER" --layout=reverse)"
-    if [ -n "$selected_dir" ]; then
-        BUFFER="cd ${selected_dir}"
-        zle accept-line
-    fi
-    zle clear-screen
+function fzf-src() {
+	local selected_dir="$(ghq list -p | fzf --query "$LBUFFER" --layout=reverse)"
+	if [ -n "$selected_dir" ]; then
+		BUFFER="cd ${selected_dir}"
+		zle accept-line
+	fi
+	zle clear-screen
 }
 zle -N fzf-src
 bindkey '^G' fzf-src
 
 # Directory navigation enhancements
-setopt auto_cd  # Change directory by just typing the directory name
-setopt auto_pushd  # Automatically add to directory stack on cd (can return with popd)
-setopt pushd_ignore_dups  # Do not add duplicates to the stack
+setopt auto_cd           # Change directory by just typing the directory name
+setopt auto_pushd        # Automatically add to directory stack on cd (can return with popd)
+setopt pushd_ignore_dups # Do not add duplicates to the stack
 
 # Prompt enhancements
 setopt prompt_subst # Allow variable and command expansion in prompt
@@ -95,10 +95,10 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' formats '%b'
 zstyle ':vcs_info:*' enable git
 precmd() {
-    vcs_info
-    print -Pn "\e]2;%-3~\a" # Set terminal title to current directory
-    PS1="%F{green}>%f "
-    RPROMPT=$'%{\033[32m%}${vcs_info_msg_0_}${vcs_info_msg_0_:+ @ }%2~%{\033[0m%}'
+	vcs_info
+	print -Pn "\e]2;%-3~\a" # Set terminal title to current directory
+	PS1="%F{green}>%f "
+	RPROMPT=$'%{\033[32m%}${vcs_info_msg_0_}${vcs_info_msg_0_:+ @ }%2~%{\033[0m%}'
 }
 
 # Enable direnv
@@ -126,12 +126,12 @@ export PATH="$HOME/.rd/bin:$PATH"
 
 # Plugins (install once, then source; add checks to avoid re-cloning)
 if [ ! -d "$HOME/.zsh/zsh-autosuggestions" ]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.zsh/zsh-autosuggestions"
+	git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.zsh/zsh-autosuggestions"
 fi
 source "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # Must: Place at the very end
 if [ ! -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.zsh/zsh-syntax-highlighting"
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.zsh/zsh-syntax-highlighting"
 fi
 source "$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
