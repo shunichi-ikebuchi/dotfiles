@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ===== Config via env =====
+BASE_BRANCH="${WCC_BASE_BRANCH:-origin/main}" # derive from this base
+WT_BASE="${WCC_BASEDIR:-$HOME/src/worktrees}" # worktree root
+PREFIX="${WCC_PREFIX:-claude}"                # branch prefix => claude/...
+SAN_SLASH="${WCC_SAN_SLASH:--}"
+SAN_COLON="${WCC_SAN_COLON:--}"
+SKIP_IF_DIRTY="${WCC_SKIP_IF_DIRTY:-0}" # 1 = skip if repo is dirty
+# ==========================
+
+# Preconditions
+if ! git rev-parse --git-dir >/dev/null 2>&1; then
+  echo "[wcc-core] not a git repo: $PWD" >&2
+  exit 1
+fi
+
+# Check if bare repo
+IS_BARE="$(git rev-parse --is-bare-repository 2>/dev/null || echo false)"
+if [[ "$SKIP_IF_DIRTY" == "1" && "$IS_BARE" == "false" ]]; then
+  if ! git diff --quiet || ! git diff --cached --quiet; then
+    echo "[wcc-core] skip: uncommitted changes exist"
+    exit 0
+  fi
+fi
+
+# ghq metadata (if available)
+if command -v ghq >/dev/null 2>&1; then GHQ_ROOT="$(ghq root 2>/dev/null || true)"; fi
+GHQ_ROOT="${GHQ_ROOT:-$HOME/src}"
+
+# Get absolute repo path (handle bare repos)
+if [[ "$IS_BARE" == "true" ]]; then
+  ABS_REPO="$(git rev-parse --git-dir)"
+  ABS_REPO="$(cd "$ABS_REPO" && pwd -P)"
+else
+  ABS_REPO="$(pwd -P)"
+fi
+HOST="local"
+OWNER="$(basename "$(dirname "$ABS_REPO")")"
+REPO_NAME="$(basename "$ABS_REPO")"
+# Strip .git suffix for bare repos
+REPO_NAME="${REPO_NAME%.git}"
+if [[ "$ABS_REPO" == "$GHQ_ROOT"* ]]; then
+  REL="${ABS_REPO#"$GHQ_ROOT"/}" # e.g., github.com/owner/name
+  HOST="$(echo "$REL" | cut -d/ -f1)"
+  OWNER="$(echo "$REL" | cut -d/ -f2)"
+  REPO_NAME="$(echo "$REL" | cut -d/ -f3-)"
+fi
+
+# Branch name: unique hash from unix timestamp seed
+UNIX_TIME="$(date +%s)"
+HASH_SEED="${UNIX_TIME}-$$-${RANDOM}"
+SHORT="$(echo -n "$HASH_SEED" | shasum -a 256 | cut -c1-7)"
+BR="${SHORT}"
+
+# Destination dir: <basedir>/<host>/<owner>/<repo>/<branch(sanitized)>
+ROOT_DIR="${WT_BASE}/${HOST}/${OWNER}/${REPO_NAME}"
+BR_DIR="${BR//\//${SAN_SLASH}}"
+BR_DIR="${BR_DIR//:/${SAN_COLON}}"
+DEST="${ROOT_DIR}/${BR_DIR}"
+mkdir -p "$ROOT_DIR"
+
+# Resolve base (remote > local > current)
+echo "[wcc-core] fetching latest refs..." >&2
+git fetch -p 2>&1 | sed 's/^/  /' >&2 || true
+if git show-ref --verify --quiet "refs/remotes/${BASE_BRANCH}"; then
+  BASE_REF="${BASE_BRANCH}"
+  echo "[wcc-core] using base: ${BASE_REF}" >&2
+elif git show-ref --verify --quiet "refs/heads/${BASE_BRANCH#*/}"; then
+  BASE_REF="${BASE_BRANCH#*/}"
+  echo "[wcc-core] using base: ${BASE_REF}" >&2
+else
+  BASE_REF="$(git rev-parse --abbrev-ref HEAD)"
+  echo "[wcc-core] WARN: base ${BASE_BRANCH} not found. fallback: ${BASE_REF}" >&2
+fi
+
+# Create if missing (with progress)
+if [[ ! -d "$DEST" ]]; then
+  echo "[wcc-core] creating worktree: ${DEST}" >&2
+  echo "[wcc-core] branch: ${BR}" >&2
+  git worktree add -b "$BR" "$DEST" "$BASE_REF" 2>&1 | sed 's/^/  /' >&2
+else
+  echo "[wcc-core] worktree exists: ${DEST}" >&2
+fi
+
+# Return the absolute path for the caller
+echo "$DEST"
