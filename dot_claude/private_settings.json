@@ -1,0 +1,104 @@
+{
+  "permissions": {
+    "read": [
+      "./**",
+      "!./.git/**",
+      "!./node_modules/**",
+      "!./**/.env",
+      "!./**/.env.*",
+      "!./**/secrets/**",
+      "!./**/*.pem",
+      "!./**/*.key",
+      "!./**/*.asc"
+    ],
+    "edit": [
+      "./**",
+      "!./.git/**",
+      "!./node_modules/**",
+      "!./**/.env",
+      "!./**/.env.*",
+      "!./**/secrets/**",
+      "!./**/*.pem",
+      "!./**/*.key",
+      "!./**/*.asc"
+    ],
+    "commands": {
+      "safe-cmd": [
+        "pwd",
+        "ls *",
+        "cat *",
+        "grep *",
+        "rg *",
+        "sed *",
+        "awk *",
+        "echo *",
+        "touch *",
+        "mkdir -p *",
+        "find *",
+        "xargs *",
+        "cp -r *",
+        "mv *",
+        "rm -rf *",
+        "git *",
+        "gh *",
+        "go *",
+        "pnpm *",
+        "npm run *",
+        "yarn run *",
+        "bun *",
+        "uv run *",
+        "python *",
+        "open *",
+        "cd *",
+        "chezmoi *",
+        "tmux *",
+        "mise *",
+        "direnv *",
+        "Bash(gh browse:*)",
+        "Bash(open https://github.com/*)",
+        "Bash(xdg-open https://github.com/*)",
+        "WebFetch(domain:github.com)",
+        "WebFetch(domain:api.github.com)"
+      ],
+      "dangerous-cmd": [
+        "!sudo*",
+        "!rm -rf /",
+        "!rm -rf /*",
+        "!dd if=*",
+        "!mkfs.*",
+        "!mount *",
+        "!umount *",
+        "!chown -R / *",
+        "!chmod -R 777 / *",
+        "!curl *| sh",
+        "!wget *| sh",
+        "!bash <(curl *)",
+        "!bash <(wget *)",
+        "!ssh*",
+        "!scp*",
+        "!gcloud*",
+        "!aws*",
+        "!kubectl*",
+        "!terraform*",
+        "!docker run *",
+        "!docker exec *",
+        "!* ../*",
+        "!* /etc/*",
+        "!* /root/*"
+      ]
+    }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh",
+    "padding": 0
+  },
+  "alwaysThinkingEnabled": true,
+  "ide": {
+    "enabled": true,
+    "autoShareErrors": true
+  },
+  "notifications": {
+    "taskCompleteSound": true
+  }
+}
