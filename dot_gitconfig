@@ -17,27 +17,6 @@
 	autocrlf = false
 	whitespace = blank-at-eol,blank-at-eof,space-before-tab
 
-[alias]
-	br = branch
-	cancel = reset --soft HEAD^
-	cm = commit
-	cma = commit -a
-	cmam = commit -am
-	cmm = commit -m
-	cmn = commit --allow-empty-message -m ''
-	co = checkout
-	df = diff
-	di = diff --cached
-	ft = fetch
-	pu = push
-	pl = pull
-	plp = pull --prune
-	st = status
-	tmp = commit -a -m 'tmp'
-	tr = log --graph --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
-	clcheck = clean -fd -n
-	ap = add -p  # For interactive add
-
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -45,10 +24,10 @@
 	required = true
 
 [commit]
-	gpgSign = true
+	gpgsign = true
 
 [tag]
-	gpgSign = true
+	gpgsign = true
 
 [help]
 	autocorrect = 10
@@ -64,7 +43,26 @@
 	diffFilter = delta --color-only  # Enable after installing delta tool
 
 [delta]
+	syntax-theme = "Gruvbox Dark"
+	side-by-side = true
+	line-numbers = true
 	paging = always
+
+[gpg]
+	program = gpg
+
+# GitHub authentication: Use gh CLI
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+# Default credential helper for other services
+[credential]
+	helper = osxkeychain
 
 [include]
 	path = ~/.gitconfig.local
