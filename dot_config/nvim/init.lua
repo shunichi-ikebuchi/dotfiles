@@ -68,6 +68,13 @@ require('lazy').setup({
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup {
+        -- 必須フィールドの追加（警告解消）
+        sync_install = false, -- 非同期インストール（推奨）
+        auto_install = true,  -- 自動インストール有効（tree-sitter CLIが必要）
+        ignore_install = {},  -- 無視するパーサーを指定（空で全対象）
+        modules = {},         -- 追加モジュール（例: playground = { enable = true }）
+
+        -- 既存の設定を維持
         ensure_installed = { 'go', 'zig', 'bash', 'python', 'lua', 'vimdoc' }, -- Includes Lua
         highlight = { enable = true },
         indent = { enable = true },

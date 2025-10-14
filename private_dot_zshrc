@@ -19,12 +19,6 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init - zsh)"
 
-# Poetry
-export PATH="$HOME/.local/bin:$PATH"
-
-# Aqua
-export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
-export PATH="$HOME/.aqua/bin:$PATH"
 
 # Key bind
 bindkey -e
@@ -39,18 +33,78 @@ source <(gwq completion zsh)
 
 # Aliases (unified to double quotes for consistency)
 alias vi="nvim"
+alias c="claude"
+alias cr="claude -r"
 alias ls="ls -G"  # Colored ls on macOS (use --color=auto on Linux)
 alias ll="ls -lh" # Detailed list, human-readable sizes
 alias la="ls -A"  # Show hidden files
 alias mv="mv -i"  # Confirm before overwriting
 alias tac="gtac"
 alias gg="ghq get -p"
-alias ggb="ghq get -p --bare"
-alias gwa="gwq add -b"         # Add worktree for a new branch
-alias gwl="gwq list -v"        # Worktree list (detailed display)
-alias gws="gwq status --watch" # Real-time status monitoring
-alias gwr="gwq remove"         # Remove worktree
 alias chz="chezmoi"
+alias mc="open -a \"Mission Control\""
+alias launchpad="open -a \"Launchpad\""
+alias reset-launchpad='sudo find 2>/dev/null /private/var/folders/ -type d -name com.apple.dock.launchpad -exec rm -rf {} +; killall Dock'
+
+# Safe delete: Always move to trash (use \rm or command rm for permanent deletion)
+function rm() {
+	local trash="$HOME/.Trash"
+	local timestamp=$(date +%Y%m%d_%H%M%S)
+	local recursive=false
+	local items=()
+
+	# Parse arguments
+	for arg in "$@"; do
+		if [[ "$arg" == "-r" || "$arg" == "-R" ]]; then
+			recursive=true
+		elif [[ "$arg" =~ ^-.*[rR].*$ ]]; then
+			# Handle combined options like -rf
+			recursive=true
+		elif [[ "$arg" != -* ]]; then
+			items+=("$arg")
+		fi
+	done
+
+	# Move items to trash
+	if [ ${#items[@]} -eq 0 ]; then
+		echo "rm: missing operand"
+		echo "Tip: Use 'command rm' or '\\rm' for permanent deletion"
+		return 1
+	fi
+
+	for item in "${items[@]}"; do
+		if [ -e "$item" ]; then
+			# Safety check for important directories
+			if [ -d "$item" ]; then
+				if [ -d "$item/.git" ]; then
+					echo "⚠️  Warning: '$item' contains .git directory"
+				fi
+				if [ "$item" = "node_modules" ] || [ "$item" = "vendor" ]; then
+					echo "💡 Info: Large dependency directory detected: $item"
+				fi
+			fi
+
+			local basename=$(basename "$item")
+			local dest="$trash/${basename}_${timestamp}"
+
+			# Check if destination already exists
+			if [ -e "$dest" ]; then
+				dest="${dest}_${RANDOM}"
+			fi
+
+			mv "$item" "$dest"
+			echo "🗑️  Moved to trash: $item → $(basename "$dest")"
+		else
+			echo "rm: $item: No such file or directory"
+		fi
+	done
+}
+
+# Trash management commands
+alias trash='ls -lhtr ~/.Trash | tail -20'           # Show recent 20 items
+alias trash-list='ls -lhtr ~/.Trash'                 # Show all items
+alias trash-clean='command rm -rf ~/.Trash/*'        # Empty trash
+alias trash-restore='echo "Move file back from ~/.Trash manually"'  # Restore hint
 
 # History settings
 HISTFILE="$HOME/.zsh_history"
@@ -118,20 +172,42 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$PATH:$ANDROID_HOME/emulator"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
-# Kiro terminal integration
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
-
-# Rancher Desktop
-export PATH="$HOME/.rd/bin:$PATH"
-
 # Plugins (install once, then source; add checks to avoid re-cloning)
 if [ ! -d "$HOME/.zsh/zsh-autosuggestions" ]; then
 	git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.zsh/zsh-autosuggestions"
 fi
 source "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
+# mise
+eval "$(/opt/homebrew/bin/mise activate zsh)"
+
+# wcc
+[ -f "$HOME/.config/shell/wcc.sh" ] && . "$HOME/.config/shell/wcc.sh"
+
+# wct - Worktree + Claude + Tmux
+# Usage: wct feat/branch-name
+wct() {
+    local branch=$1
+    local session_name=$(echo $branch | tr '/' '-' | sed 's/feat-//')
+    
+    # worktreeに移動
+    cd $(gwq get $branch) || return 1
+    
+    # tmuxセッションが既に存在するかチェック
+    if ! tmux has-session -t $session_name 2>/dev/null; then
+        # 新規セッション作成
+        tmux new-session -d -s $session_name -c $(pwd)
+    fi
+    
+    # セッションにアタッチ
+    tmux attach-session -t $session_name
+}
+
 # Must: Place at the very end
 if [ ! -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.zsh/zsh-syntax-highlighting"
 fi
 source "$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# Load environment-specific configuration (not managed by chezmoi)
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
