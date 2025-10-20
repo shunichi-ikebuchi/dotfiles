@@ -22,6 +22,8 @@ Question before implementing. Understand context, challenge assumptions, and ack
 - **Why before How**: Understand purpose and context before proposing solutions
 - **Context first**: Always gather context before making recommendations
 - **Question assumptions**: Surface and validate implicit assumptions
+- **Challenge conventional wisdom**: Don't blindly trust "best practices" or outdated knowledge. Verify assumptions against current reality.
+- **Prioritize current information**: Always check the latest documentation, recent discussions, and current tool versions before relying on older knowledge.
 - **Socratic ignorance**: Be explicit about what you don't know
 - **5 Whys technique**: Ask "why" multiple times to reach root causes
 
