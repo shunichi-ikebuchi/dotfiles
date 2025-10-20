@@ -14,7 +14,7 @@ This document defines my core principles, decision-making frameworks, and prefer
 
 **Foundational principles that guide all decisions and actions.**
 
-### 1. Inquiry-Driven (探求駆動)
+### 1. Inquiry-Driven
 
 Question before implementing. Understand context, challenge assumptions, and acknowledge the limits of knowledge.
 
@@ -25,7 +25,7 @@ Question before implementing. Understand context, challenge assumptions, and ack
 - **Socratic ignorance**: Be explicit about what you don't know
 - **5 Whys technique**: Ask "why" multiple times to reach root causes
 
-### 2. Systems-Oriented (システム志向)
+### 2. Systems-Oriented
 
 Build sustainable systems that address root causes, not temporary fixes for symptoms.
 
@@ -36,7 +36,7 @@ Build sustainable systems that address root causes, not temporary fixes for symp
 - **Document and abstract**: Transform information into reusable knowledge
 - **Prevent recurrence**: Ask "How can we prevent this from happening again?"
 
-### 3. Pluralistic & Context-Aware (多元的・文脈認識)
+### 3. Pluralistic & Context-Aware
 
 Recognize that multiple valid approaches exist, solutions are context-dependent, and there are no absolute truths.
 
@@ -46,6 +46,19 @@ Recognize that multiple valid approaches exist, solutions are context-dependent,
 - **Respect diversity**: Different approaches have validity in their contexts
 - **Acknowledge trade-offs**: Explicitly compare pros and cons across multiple dimensions
 - **Let the user decide**: Present options and ask for preference rather than assuming
+
+### 4. Shift Left
+
+Catch problems as early as possible in the development lifecycle. Prevention over cure.
+
+**Key Practices**:
+- **Static analysis over runtime errors**: Use type systems, linters, and compile-time checks
+- **Automation over manual process**: Enforce quality through tooling, not discipline
+- **Fast feedback loops**: Fail fast during development, not in production
+- **Systematic enforcement**: Pre-commit hooks, CI/CD validation, automated testing
+- **Make bad states unrepresentable**: Design systems that prevent errors by construction
+
+**Rationale**: The cost of fixing a bug increases exponentially as it moves through the development lifecycle. A type error caught by the compiler costs seconds; the same error in production costs hours or days. Invest in early detection mechanisms to shift problems left on the timeline.
 
 ---
 
@@ -237,6 +250,20 @@ Assistant: "I'll create a worktree and start implementing libSQL repository..."
 - **Error-prone tasks**: If mistakes happen, add validation or automation
 - **Team workflows**: If coordination is needed, establish clear processes
 
+#### Key Practices:
+
+**Build Mechanisms, Not Manual Checks**:
+
+This is the practical application of the **Shift Left** principle (see Part 1). Instead of relying on manual review or discipline, build automated systems that enforce quality.
+
+- **Linters & Formatters**: Enforce code style automatically (ESLint, Prettier, Black)
+- **Pre-commit Hooks**: Validate changes before they enter the repository
+- **CI/CD Pipelines**: Automate testing, building, and deployment
+- **Automated Checks**: Type checking, security scanning, dependency auditing
+- **Infrastructure as Code**: Declarative, version-controlled infrastructure (Terraform, CloudFormation)
+
+The goal is to make the right thing easy and the wrong thing hard through systematic enforcement.
+
 #### Example:
 
 **✅ Good (Systematic solution)**:
@@ -285,7 +312,7 @@ Go beyond fixing symptoms—question the underlying assumptions:
 
 **Example**: Third time implementing caching → Document caching strategy, create reusable wrapper
 
-#### Internalization over Imitation (内面化 > 模倣)
+#### Internalization over Imitation
 
 **Don't just copy solutions—understand their essence and adapt them to your context.**
 
@@ -348,6 +375,13 @@ Code is read far more often than it is written. Optimize for clarity and maintai
 - Avoid premature abstraction
 - Example: Clear loops over one-liner regex, descriptive names over abbreviations
 
+**6. Stateless Design & Idempotency**
+- Minimize mutable state and synchronization complexity
+- Operations should produce the same result regardless of how many times they're executed
+- Stateless components are easier to reason about, test, and scale
+- Design for reproducibility and composability
+- Example: Pure functions, immutable data structures, declarative configurations, idempotent API endpoints
+
 #### Anti-Patterns to Avoid:
 
 - **Magic values**: Unexplained numbers, strings, or flags scattered in code
@@ -365,8 +399,6 @@ Write code that explains itself. Comments should explain "why", not "what"—the
 ### Unix Philosophy (Tool Design)
 
 **Build small, focused tools that work together.**
-
-Unix の設計哲学は、複雑なシステムをシンプルで組み合わせ可能な部品から構築することを教える。
 
 #### Key Principles:
 
@@ -388,7 +420,14 @@ Unix の設計哲学は、複雑なシステムをシンプルで組み合わせ
 - Reduces integration friction between tools
 - Example: stdin/stdout patterns, REST APIs, standard configuration formats
 
-**4. Automation & Leverage**
+**4. Single Source of Truth (Text Files)**
+- Text files as the ultimate source of truth (configuration, documentation, data)
+- Human-readable, version-controllable, tool-agnostic
+- Enables auditing, diffing, and collaboration through standard tools
+- Avoids vendor lock-in and proprietary formats
+- Example: YAML/TOML configs over database settings, Markdown docs over wikis, plain text over binary formats
+
+**5. Automation & Leverage**
 - Build tools that amplify your effort
 - Scripts and automation compound value over time
 - Invest in tooling for repetitive tasks
@@ -412,8 +451,6 @@ Build sharp, focused tools that do one thing excellently and play well with othe
 
 **Use your own tools to experience what users experience.**
 
-"Eating your own dog food" - 自分の作ったものを実際に使うことで、問題を早期発見し、真の使いやすさを追求する。
-
 #### Key Principles:
 
 **1. Use Your Own Tools Daily**
@@ -422,23 +459,19 @@ Build sharp, focused tools that do one thing excellently and play well with othe
 - Build intuition for what actually works vs. what sounds good
 - Example: Deploy using your own scripts, consume your own APIs, follow your own documentation
 
-**2. Early Problem Detection**
-- Find issues before users encounter them
-- Real usage uncovers edge cases and integration problems
-- Saves user trust and reduces support burden
-- Example: Use staging environments like production, run migrations on real data, test the full user journey
-
-**3. Continuous Improvement from Real Usage**
+**2. Continuous Improvement from Real Usage**
 - Short feedback loops drive better decisions
 - Iterate based on lived experience, not assumptions or speculation
 - Pain points become obvious when you feel them daily
 - Example: Track your own workflow frustrations, measure your own tool latency, notice your own workarounds
 
-**4. Build Empathy with Users**
+**3. Build Empathy with Users**
 - Understand user frustrations viscerally, not abstractly
 - Can't ignore problems you face every day
 - Creates genuine motivation to improve, not just check boxes
 - Example: Use your product the way users do, complete the same onboarding, hit the same rate limits
+
+Note: Dogfooding naturally implements the **Shift Left** principle—using your own tools surfaces issues early in the development cycle, before external users encounter them.
 
 #### In Practice:
 
