@@ -1,0 +1,179 @@
+#!/bin/bash
+# Copy files/directories listed in .git/info/exclude and .gitignore from main repository
+# Usage: git-copy-excluded [source_worktree_path]
+#
+# When run without arguments, automatically detects the main repository using ghq
+
+set -euo pipefail
+
+CURRENT_DIR="$(pwd)"
+
+# Check if current directory is a Git repository
+if ! git rev-parse --git-dir >/dev/null 2>&1; then
+    echo "Error: Not a Git repository. Please run this command from within a Git repository."
+    exit 1
+fi
+
+# Get the Git directory (handles both regular repos and worktrees)
+GIT_DIR="$(git rev-parse --git-dir)"
+EXCLUDE_FILE="$GIT_DIR/info/exclude"
+GITIGNORE_FILE=".gitignore"
+
+# Determine source worktree path
+if [ $# -eq 0 ]; then
+    # Auto-detect using ghq and git remote
+    if ! command -v ghq >/dev/null 2>&1; then
+        echo "Error: ghq not found. Please install ghq or provide source path as argument."
+        echo "Usage: git-copy-excluded <source_worktree_path>"
+        exit 1
+    fi
+
+    # Get ghq root
+    GHQ_ROOT=$(ghq root)
+
+    # Get remote URL and extract repository path
+    REMOTE_URL=$(git config --get remote.origin.url || echo "")
+
+    if [ -z "$REMOTE_URL" ]; then
+        echo "Error: No remote.origin.url found. Please provide source path as argument."
+        echo "Usage: git-copy-excluded <source_worktree_path>"
+        exit 1
+    fi
+
+    # Parse repository path from remote URL
+    # Supports: git@github.com:Owner/Repo.git, https://github.com/Owner/Repo.git
+    REPO_PATH=$(echo "$REMOTE_URL" | sed -E 's#^(git@|https://)##' | sed -E 's#:#/#' | sed -E 's#\.git$##')
+
+    SOURCE_WORKTREE="$GHQ_ROOT/$REPO_PATH"
+
+    if [ ! -d "$SOURCE_WORKTREE" ]; then
+        echo "Error: Auto-detected source not found: $SOURCE_WORKTREE"
+        echo "Please provide source path manually:"
+        echo "Usage: git-copy-excluded <source_worktree_path>"
+        exit 1
+    fi
+
+    echo "Auto-detected source: $SOURCE_WORKTREE"
+else
+    SOURCE_WORKTREE="$1"
+
+    # Validate source worktree
+    if [ ! -d "$SOURCE_WORKTREE" ]; then
+        echo "Error: Source worktree does not exist: $SOURCE_WORKTREE"
+        exit 1
+    fi
+fi
+
+# Check if source is a Git repository
+if [ ! -d "$SOURCE_WORKTREE/.git" ] && [ ! -f "$SOURCE_WORKTREE/.git" ]; then
+    echo "Error: Source is not a Git repository: $SOURCE_WORKTREE"
+    exit 1
+fi
+
+echo "Copying excluded/ignored files from: $SOURCE_WORKTREE"
+echo "To current directory: $CURRENT_DIR"
+echo ""
+
+# Collect patterns from both .git/info/exclude and .gitignore
+all_patterns=""
+
+# Read from .git/info/exclude
+if [ -f "$EXCLUDE_FILE" ]; then
+    echo "Reading patterns from: $EXCLUDE_FILE"
+    exclude_patterns=$(grep -v '^#' "$EXCLUDE_FILE" | grep -v '^$' || true)
+    if [ -n "$exclude_patterns" ]; then
+        all_patterns="$exclude_patterns"
+    fi
+fi
+
+# Read from .gitignore
+if [ -f "$GITIGNORE_FILE" ]; then
+    echo "Reading patterns from: $GITIGNORE_FILE"
+    gitignore_patterns=$(grep -v '^#' "$GITIGNORE_FILE" | grep -v '^$' | grep -v '^!' || true)
+    if [ -n "$gitignore_patterns" ]; then
+        if [ -n "$all_patterns" ]; then
+            all_patterns="$all_patterns"$'\n'"$gitignore_patterns"
+        else
+            all_patterns="$gitignore_patterns"
+        fi
+    fi
+fi
+
+if [ -z "$all_patterns" ]; then
+    echo "No patterns found in $EXCLUDE_FILE or $GITIGNORE_FILE"
+    exit 0
+fi
+
+echo ""
+echo "Patterns to copy:"
+echo "$all_patterns"
+echo ""
+
+copied_count=0
+skipped_count=0
+
+# Process each pattern (deduplicate with sort -u)
+while IFS= read -r pattern; do
+    # Remove leading/trailing whitespace
+    pattern=$(echo "$pattern" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+    # Skip empty lines
+    if [ -z "$pattern" ]; then
+        continue
+    fi
+
+    # Skip negation patterns (starting with !)
+    if [[ "$pattern" == !* ]]; then
+        continue
+    fi
+
+    # Remove trailing slash if present
+    pattern_clean="${pattern%/}"
+
+    # Skip if pattern contains wildcards or special characters
+    # (we only copy exact paths, not glob patterns)
+    if [[ "$pattern_clean" == *"*"* ]] || [[ "$pattern_clean" == *"?"* ]] || [[ "$pattern_clean" == *"["* ]]; then
+        echo "Skipped (glob pattern not supported): $pattern_clean"
+        ((skipped_count++))
+        continue
+    fi
+
+    # Check if source exists
+    source_path="$SOURCE_WORKTREE/$pattern_clean"
+
+    if [ -e "$source_path" ]; then
+        # Check if already copied (skip duplicates)
+        if [ -e "$CURRENT_DIR/$pattern_clean" ]; then
+            echo "Skipped (already exists): $pattern_clean"
+            ((skipped_count++))
+            continue
+        fi
+
+        echo "Copying: $pattern_clean"
+
+        # If it's a directory, use rsync to preserve structure
+        if [ -d "$source_path" ]; then
+            if command -v rsync >/dev/null 2>&1; then
+                rsync -av --progress "$source_path/" "$CURRENT_DIR/$pattern_clean/"
+            else
+                # Fallback to cp if rsync is not available
+                cp -Rv "$source_path" "$CURRENT_DIR/"
+            fi
+        else
+            # For files, use cp
+            mkdir -p "$(dirname "$CURRENT_DIR/$pattern_clean")"
+            cp -v "$source_path" "$CURRENT_DIR/$pattern_clean"
+        fi
+
+        ((copied_count++))
+    else
+        echo "Skipped (not found in source): $pattern_clean"
+        ((skipped_count++))
+    fi
+    echo ""
+done <<< "$(echo "$all_patterns" | sort -u)"
+
+echo "Summary:"
+echo "  Copied: $copied_count"
+echo "  Skipped: $skipped_count"
+

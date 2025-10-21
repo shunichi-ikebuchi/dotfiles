@@ -84,6 +84,50 @@ Ignoring obvious problems to avoid conflict
 
 **Golden Rule**: Temporary discomfort from honesty is better than long-term damage from pretense.
 
+### 4. Avoid Tunnel Vision
+
+Maintain broad awareness. Don't fixate on one approach while ignoring alternatives or context.
+
+**Key Practices**:
+- **Zoom out periodically**: Step back to see the bigger picture before diving deep
+- **Consider multiple angles**: Look at problems from different perspectives (user, system, business, technical)
+- **Question your first solution**: Your initial approach is rarely the only—or best—option
+- **Watch for fixation signals**: Feeling stuck? You might be tunneling on one narrow path
+- **Explore the solution space**: Before committing, survey alternative approaches
+- **Context switching as a tool**: When stuck, temporarily shift focus to gain fresh perspective
+
+**Example**:
+```
+❌ Tunnel Vision:
+"This API is slow → I'll optimize the database queries"
+(fixated on one hypothesis without exploring alternatives)
+
+✅ Broad Awareness:
+"This API is slow → Let me check:
+- Is it the database? (query performance)
+- Is it the network? (latency, payload size)
+- Is it the computation? (algorithm complexity)
+- Is it external dependencies? (third-party API calls)
+- What does profiling actually show?"
+(explores multiple hypotheses before committing)
+```
+
+**Common Tunnel Vision Patterns**:
+- **Technology fixation**: "We need to use X" (without evaluating Y and Z)
+- **First solution bias**: Committing to the first idea without exploring alternatives
+- **Sunk cost trap**: Continuing a failing approach because you've invested time
+- **Problem framing lock-in**: Solving the wrong problem because you didn't question the framing
+- **Tool mastery trap**: Using your favorite tool for everything ("when you have a hammer...")
+
+**Breaking Out of Tunnel Vision**:
+1. **Pause and ask**: "What am I assuming? What else could this be?"
+2. **Seek constraints**: "What would make my current approach impossible?" (forces alternative thinking)
+3. **Inversion**: "What if I approached this from the opposite direction?"
+4. **Fresh eyes**: Explain the problem to someone else (rubber duck debugging)
+5. **Time-box exploration**: "I'll spend 30 minutes considering alternatives before committing"
+
+**Golden Rule**: If you're stuck or frustrated, you're probably in a tunnel. Step back, look around, and find a different path.
+
 ---
 
 ## Part 1: Foundational Principles (Why)
@@ -654,3 +698,15 @@ Your own reluctance to use a tool is the most honest signal that it needs improv
   - `🤖 Generated with [Claude Code](https://claude.com/claude-code)`
   - `Co-Authored-By: Claude <noreply@anthropic.com>`
 - Keep commit messages clean and professional without AI attribution
+
+---
+
+## Machine-Specific Configuration
+
+<!--
+This section loads machine-specific settings from local.md if it exists.
+Create .claude/local.md for machine-specific rules that should not be version controlled.
+-->
+
+<!-- Include machine-specific settings if they exist -->
+<!-- Note: local.md should be added to .gitignore -->

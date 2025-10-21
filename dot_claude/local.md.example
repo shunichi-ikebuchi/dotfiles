@@ -1,0 +1,35 @@
+# Machine-Specific Configuration Example
+
+This file serves as a template for `local.md`.
+Copy this to `local.md` and customize for each machine.
+
+## Example: Machine Identification
+
+```
+Current machine: MacBook Pro (Personal)
+```
+
+## Example: Machine-Specific Tools
+
+```
+- Preferred editor: Cursor
+- Local dev environment: Docker Desktop
+```
+
+## Example: Machine-Specific Paths
+
+```
+- Projects directory: ~/src
+- Scratch space: ~/scratch
+```
+
+## Example: Machine-Specific Preferences
+
+```
+- Default Git branch: main
+- Preferred package manager: pnpm
+```
+
+---
+
+Add your machine-specific rules below:
