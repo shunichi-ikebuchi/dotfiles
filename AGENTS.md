@@ -19,27 +19,28 @@ These are my personal coding principles and guidelines that apply to **all proje
 All AI agents should familiarize themselves with these foundational principles:
 
 ### Universal Philosophy
-- **[Meta-Principles](docs/coding/philosophy/meta-principles.md)**: Top-down & bottom-up thinking, goal-oriented approach, intellectual honesty, avoiding tunnel vision
-- **[Foundational Principles](docs/coding/philosophy/foundational-principles.md)**: Inquiry-driven, systems-oriented, pluralistic & context-aware, shift left
-- **[Decision-Making](docs/coding/philosophy/decision-making.md)**: Evaluating options, time-horizon analysis, when NOT to decide
-- **[Application Patterns](docs/coding/philosophy/application-patterns.md)**: Abstraction-first communication, problem-solution discipline, systems-building, knowledge transformation, dogfooding
+- **[Meta-Principles](docs/philosophy/meta-principles.md)**: Top-down & bottom-up thinking, goal-oriented approach, intellectual honesty, avoiding tunnel vision
+- **[Foundational Principles](docs/philosophy/foundational-principles.md)**: Inquiry-driven, systems-oriented, pluralistic & context-aware, shift left
+- **[Decision-Making](docs/philosophy/decision-making.md)**: Evaluating options, time-horizon analysis, when NOT to decide
+- **[Application Patterns](docs/philosophy/application-patterns.md)**: Abstraction-first communication, problem-solution discipline, systems-building, knowledge transformation, dogfooding
 
-### Design Principles
-- **[SOLID Principles](docs/coding/design/principles/solid.md)**: Object-oriented design principles (SRP, OCP, LSP, ISP, DIP)
+### Universal Design Principles
+- **[Security-First Principles](docs/principles/security-first.md)**: Security First, Secure by Default, Defense in Depth, Least Privilege, Zero Trust
+- **[Unix Philosophy](docs/principles/unix-philosophy.md)**: Do one thing well, composability, universal interfaces, single source of truth
 
-### Design Practices
-- **[Unix Philosophy](docs/coding/design/practices/unix-philosophy.md)**: Do one thing well, composability, universal interfaces, single source of truth
+### Software Design Principles
+- **[SOLID Principles](docs/software/design/principles/solid.md)**: Object-oriented design principles (SRP, OCP, LSP, ISP, DIP)
 
 ### Testing Strategy
-- **[Testing Strategy](docs/coding/testing/strategy.md)**: Testing pyramid, shift left, human-AI collaboration
-- **[Testing Automation](docs/coding/testing/automation.md)**: What to automate, maximizing automation, anti-patterns
-- **[QA Principles](docs/coding/testing/qa-principles.md)**: Human judgment activities, requirements validation, UX evaluation, exploratory testing
+- **[Testing Strategy](docs/software/testing/strategy.md)**: Testing pyramid, shift left, human-AI collaboration
+- **[Testing Automation](docs/software/testing/automation.md)**: What to automate, maximizing automation, anti-patterns
+- **[QA Principles](docs/software/testing/qa-principles.md)**: Human judgment activities, requirements validation, UX evaluation, exploratory testing
 
 ### Operations
-- **[AI-Driven Automation](docs/coding/operations/ai-automation.md)**: Leveraging AI for productivity, human-AI collaboration patterns
+- **[AI-Driven Automation](docs/software/operations/ai-automation.md)**: Leveraging AI for productivity, human-AI collaboration patterns
 
 ### Implementation Practices
-- **[Code Quality Principles](docs/coding/implementation/general/code-quality.md)**: Writing clear, maintainable code (explicitness, locality, fail-fast design)
+- **[Code Quality Principles](docs/software/implementation/general/code-quality.md)**: Writing clear, maintainable code (explicitness, locality, fail-fast design)
 
 ---
 
@@ -49,12 +50,26 @@ When working with specific programming languages, consult the appropriate langua
 
 | Language | Quick Reference | Best Practices | Testing | Patterns |
 |----------|----------------|----------------|---------|----------|
-| **TypeScript** | [AGENTS.md](docs/coding/implementation/languages/typescript/AGENTS.md) | [best-practices.md](docs/coding/implementation/languages/typescript/best-practices.md) | [testing.md](docs/coding/implementation/languages/typescript/testing.md) | [patterns.md](docs/coding/implementation/languages/typescript/patterns.md) |
-| **Go** | [AGENTS.md](docs/coding/implementation/languages/go/AGENTS.md) | [best-practices.md](docs/coding/implementation/languages/go/best-practices.md) | [testing.md](docs/coding/implementation/languages/go/testing.md) | [patterns.md](docs/coding/implementation/languages/go/patterns.md) |
-| **Python** | [AGENTS.md](docs/coding/implementation/languages/python/AGENTS.md) | [best-practices.md](docs/coding/implementation/languages/python/best-practices.md) | [testing.md](docs/coding/implementation/languages/python/testing.md) | [patterns.md](docs/coding/implementation/languages/python/patterns.md) |
-| **Rust** | [AGENTS.md](docs/coding/implementation/languages/rust/AGENTS.md) | [best-practices.md](docs/coding/implementation/languages/rust/best-practices.md) | - | - |
-| **Zig** | [AGENTS.md](docs/coding/implementation/languages/zig/AGENTS.md) | [best-practices.md](docs/coding/implementation/languages/zig/best-practices.md) | - | - |
-| **Haskell** | [AGENTS.md](docs/coding/implementation/languages/haskell/AGENTS.md) | [best-practices.md](docs/coding/implementation/languages/haskell/best-practices.md) | - | - |
+| **TypeScript** | [AGENTS.md](docs/software/implementation/languages/typescript/AGENTS.md) | [best-practices.md](docs/software/implementation/languages/typescript/best-practices.md) | [testing.md](docs/software/implementation/languages/typescript/testing.md) | [patterns.md](docs/software/implementation/languages/typescript/patterns.md) |
+| **Go** | [AGENTS.md](docs/software/implementation/languages/go/AGENTS.md) | [best-practices.md](docs/software/implementation/languages/go/best-practices.md) | [testing.md](docs/software/implementation/languages/go/testing.md) | [patterns.md](docs/software/implementation/languages/go/patterns.md) |
+| **Python** | [AGENTS.md](docs/software/implementation/languages/python/AGENTS.md) | [best-practices.md](docs/software/implementation/languages/python/best-practices.md) | [testing.md](docs/software/implementation/languages/python/testing.md) | [patterns.md](docs/software/implementation/languages/python/patterns.md) |
+| **Java** | [AGENTS.md](docs/software/implementation/languages/java/AGENTS.md) | [best-practices.md](docs/software/implementation/languages/java/best-practices.md) | - | - |
+| **Rust** | [AGENTS.md](docs/software/implementation/languages/rust/AGENTS.md) | [best-practices.md](docs/software/implementation/languages/rust/best-practices.md) | - | - |
+| **Zig** | [AGENTS.md](docs/software/implementation/languages/zig/AGENTS.md) | [best-practices.md](docs/software/implementation/languages/zig/best-practices.md) | - | - |
+| **Haskell** | [AGENTS.md](docs/software/implementation/languages/haskell/AGENTS.md) | [best-practices.md](docs/software/implementation/languages/haskell/best-practices.md) | - | - |
+
+---
+
+## Platform-Specific Guidelines
+
+When working with cloud platforms, consult the appropriate platform-specific guidelines:
+
+| Platform | Quick Reference | Architecture | IaC | Cost Optimization | Security |
+|----------|----------------|--------------|-----|-------------------|----------|
+| **Google Cloud Platform** | [AGENTS.md](docs/software/implementation/platforms/gcp/AGENTS.md) | [architecture.md](docs/software/implementation/platforms/gcp/architecture.md) | [iac.md](docs/software/implementation/platforms/gcp/iac.md) | [cost-optimization.md](docs/software/implementation/platforms/gcp/cost-optimization.md) | [security.md](docs/software/implementation/platforms/gcp/security.md) |
+| **Amazon Web Services** | [AGENTS.md](docs/software/implementation/platforms/aws/AGENTS.md) | [architecture.md](docs/software/implementation/platforms/aws/architecture.md) | [iac.md](docs/software/implementation/platforms/aws/iac.md) | [cost-optimization.md](docs/software/implementation/platforms/aws/cost-optimization.md) | [security.md](docs/software/implementation/platforms/aws/security.md) |
+
+**Platform Philosophy**: Leverage cloud provider strengths while avoiding excessive vendor lock-in through portable patterns and abstractions.
 
 ---
 
